@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://dv468oew23b3x"]
+
+[ext_resource type="PackedScene" uid="uid://xshqlisghc48" path="res://objects/importedRES/SnowSceneOBJECT.fbx" id="1_l7s4u"]
+
+[node name="Root Scene" instance=ExtResource("1_l7s4u")]

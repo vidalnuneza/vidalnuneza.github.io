@@ -1,0 +1,46 @@
+[gd_scene load_steps=7 format=3 uid="uid://cytg4tavuxi4q"]
+
+[ext_resource type="PackedScene" uid="uid://dc128ow3pewkv" path="res://objects/floor.tscn" id="1_cyv8v"]
+[ext_resource type="Script" path="res://scripts/AddFloor.gd" id="1_rqqhm"]
+[ext_resource type="PackedScene" uid="uid://csbc8bo6jkcx5" path="res://objects/player.tscn" id="2_m3k3a"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_xokb3"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_w0xth"]
+sky_material = SubResource("ProceduralSkyMaterial_xokb3")
+
+[sub_resource type="Environment" id="Environment_np6jv"]
+background_mode = 2
+sky = SubResource("Sky_w0xth")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="Game" type="Node3D"]
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_np6jv")
+
+[node name="FloorContainer" type="Node3D" parent="."]
+script = ExtResource("1_rqqhm")
+
+[node name="Floor" parent="FloorContainer" instance=ExtResource("1_cyv8v")]
+
+[node name="Floor2" parent="FloorContainer" instance=ExtResource("1_cyv8v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 0)
+
+[node name="Floor3" parent="FloorContainer" instance=ExtResource("1_cyv8v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 0)
+
+[node name="Player" parent="." instance=ExtResource("2_m3k3a")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 1, 0)
+
+[node name="CamaraPivot" type="Marker3D" parent="Player"]
+
+[node name="Camera3D" type="Camera3D" parent="Player/CamaraPivot"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)

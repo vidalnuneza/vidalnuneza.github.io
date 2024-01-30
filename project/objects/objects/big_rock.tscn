@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://ctv5gp87m0un1"]
+
+[ext_resource type="Script" path="res://scripts/death_collision.gd" id="1_1qavq"]
+[ext_resource type="PackedScene" uid="uid://ccurviiygayg1" path="res://objects/importedRES/rockOBJECT.fbx" id="2_elb64"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3nruq"]
+size = Vector3(5, 5, 5)
+
+[node name="Rocks" type="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -7.457, 0)
+script = ExtResource("1_1qavq")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 0)
+shape = SubResource("BoxShape3D_3nruq")
+
+[node name="Root Scene" parent="." instance=ExtResource("2_elb64")]
+transform = Transform3D(-4.37114e-08, 2.4, 0, -1, -1.04907e-07, 0, 0, 0, 1.92, -3, 3, 0)
+
+[node name="Root Scene2" parent="." instance=ExtResource("2_elb64")]
+transform = Transform3D(0.5, 2.07846, 0, -0.866025, 1.2, 0, 0, 0, 1.92, -3, 5, 0)
+
+[connection signal="body_entered" from="." to="." method="_rocks_col·lision_detection"]

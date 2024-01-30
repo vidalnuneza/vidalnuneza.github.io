@@ -1,0 +1,83 @@
+[gd_scene load_steps=12 format=3 uid="uid://cytg4tavuxi4q"]
+
+[ext_resource type="Script" path="res://scripts/AddFloor.gd" id="1_3knus"]
+[ext_resource type="PackedScene" uid="uid://dc128ow3pewkv" path="res://objects/floor/blank_floor.tscn" id="1_cyv8v"]
+[ext_resource type="PackedScene" uid="uid://csbc8bo6jkcx5" path="res://objects/player.tscn" id="2_m3k3a"]
+[ext_resource type="PackedScene" uid="uid://bprl3f3cgj1eu" path="res://objects/floor/slopes/left_slope_floor.tscn" id="3_k45rs"]
+[ext_resource type="PackedScene" uid="uid://dsatj60khv8xm" path="res://objects/floor/slopes/center_slope_floor.tscn" id="3_r4aam"]
+[ext_resource type="PackedScene" uid="uid://bweqfju4xd5yq" path="res://objects/floor/slopes/right_slope_floor.tscn" id="4_tvdh5"]
+[ext_resource type="Script" path="res://scripts/Points Label.gd" id="5_ni3c0"]
+[ext_resource type="PackedScene" uid="uid://djrn5fdtdtpo3" path="res://objects/floor/obstacle_tree_floor.tscn" id="6_donal"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_xokb3"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_w0xth"]
+sky_material = SubResource("ProceduralSkyMaterial_xokb3")
+
+[sub_resource type="Environment" id="Environment_np6jv"]
+background_mode = 2
+sky = SubResource("Sky_w0xth")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="Game" type="Node3D"]
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_np6jv")
+
+[node name="FloorContainer" type="Node3D" parent="."]
+script = ExtResource("1_3knus")
+_floor = Array[PackedScene]([ExtResource("3_r4aam"), ExtResource("3_k45rs"), ExtResource("4_tvdh5"), ExtResource("1_cyv8v"), ExtResource("6_donal")])
+
+[node name="Floor" parent="FloorContainer" instance=ExtResource("1_cyv8v")]
+
+[node name="Floor2" parent="FloorContainer" instance=ExtResource("1_cyv8v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0, 0)
+
+[node name="Floor3" parent="FloorContainer" instance=ExtResource("1_cyv8v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 0, 0)
+
+[node name="Floor5" parent="FloorContainer" instance=ExtResource("1_cyv8v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -150, 0, 0)
+
+[node name="Floor4" parent="FloorContainer" instance=ExtResource("3_r4aam")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -100.487, 0, 0)
+
+[node name="Player" parent="." instance=ExtResource("2_m3k3a")]
+transform = Transform3D(7.54979e-08, 0, -1, 0, 1, 0, 1, 0, 7.54979e-08, 0, 1, 0)
+
+[node name="CamaraPivot" type="Marker3D" parent="Player"]
+transform = Transform3D(1, -1.31134e-07, 5.73206e-15, 0, -4.37114e-08, -1, 1.31134e-07, 1, -4.37114e-08, 0, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Player/CamaraPivot"]
+transform = Transform3D(-1, 4.37114e-08, -1.31134e-07, 1.31134e-07, -4.37114e-08, -1, -4.37114e-08, -1, 4.37114e-08, 0, 0, 0)
+
+[node name="AddFloor" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+offset_left = 20.0
+offset_top = 10.0
+offset_right = 192.0
+offset_bottom = 50.0
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+render_target_update_mode = 4
+
+[node name="Points Label" type="Label" parent="SubViewportContainer/SubViewport"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "	Points"
+script = ExtResource("5_ni3c0")
+
+[connection signal="timeout" from="AddFloor" to="FloorContainer" method="_on_add_floor_timeout"]
+[connection signal="timeout" from="AddFloor" to="SubViewportContainer/SubViewport/Points Label" method="_on_add_1_point_floor_timeout"]

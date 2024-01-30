@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://d2eg7se60ygvf"]
+
+[ext_resource type="Script" path="res://scripts/death_collision.gd" id="1_wg8kp"]
+[ext_resource type="PackedScene" uid="uid://bpdladmvf7tku" path="res://objects/importedRES/TreeOBJECT.fbx" id="2_vedro"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dr8px"]
+size = Vector3(2.04413, 5.88318, 1.87317)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3aj1a"]
+size = Vector3(8.22502, 8.02048, 8.0238)
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_wg8kp")
+
+[node name="Root Scene" parent="." instance=ExtResource("2_vedro")]
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0520325, 3.39063, 0.126607)
+shape = SubResource("BoxShape3D_dr8px")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.44045, 12.0082, -0.211698)
+shape = SubResource("BoxShape3D_3aj1a")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_tree_collition"]

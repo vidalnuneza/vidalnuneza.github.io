@@ -1,0 +1,101 @@
+[gd_scene load_steps=20 format=3 uid="uid://cytg4tavuxi4q"]
+
+[ext_resource type="Script" path="res://scripts/AddFloor.gd" id="1_3knus"]
+[ext_resource type="PackedScene" uid="uid://dc128ow3pewkv" path="res://objects/floor/blank_floor.tscn" id="1_cyv8v"]
+[ext_resource type="Texture2D" uid="uid://ce4wuoi1ewevt" path="res://snowySky.jpg" id="1_y4epw"]
+[ext_resource type="PackedScene" uid="uid://csbc8bo6jkcx5" path="res://objects/player.tscn" id="2_m3k3a"]
+[ext_resource type="PackedScene" uid="uid://bprl3f3cgj1eu" path="res://objects/floor/slopes/left_slope_floor.tscn" id="3_k45rs"]
+[ext_resource type="PackedScene" uid="uid://dsatj60khv8xm" path="res://objects/floor/slopes/center_slope_floor.tscn" id="3_r4aam"]
+[ext_resource type="PackedScene" uid="uid://bweqfju4xd5yq" path="res://objects/floor/slopes/right_slope_floor.tscn" id="4_tvdh5"]
+[ext_resource type="Script" path="res://scripts/Points Label.gd" id="5_ni3c0"]
+[ext_resource type="PackedScene" uid="uid://t8s3k7vx5xjs" path="res://objects/floor/small_big_rock_floor.tscn" id="5_tlpy1"]
+[ext_resource type="PackedScene" uid="uid://djrn5fdtdtpo3" path="res://objects/floor/obstacle_tree_floor.tscn" id="6_donal"]
+[ext_resource type="PackedScene" uid="uid://b2hpnllekrd44" path="res://objects/floor/small_big_tree_rock_floor.tscn" id="6_eskna"]
+[ext_resource type="PackedScene" uid="uid://biyhcvs62a7my" path="res://objects/floor/small_rock_floor.tscn" id="7_45k41"]
+[ext_resource type="PackedScene" uid="uid://cor0kgjfvgaw2" path="res://objects/floor/even_more_trees_floor.tscn" id="10_8uce2"]
+[ext_resource type="AudioStream" uid="uid://c2qcss4ljn0yl" path="res://backgroundsound.mp3" id="12_gart5"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_0wqph"]
+panorama = ExtResource("1_y4epw")
+
+[sub_resource type="Sky" id="Sky_w0xth"]
+sky_material = SubResource("PanoramaSkyMaterial_0wqph")
+
+[sub_resource type="Environment" id="Environment_np6jv"]
+background_mode = 2
+sky = SubResource("Sky_w0xth")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2luh4"]
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_bmkky"]
+radius = 0.05
+height = 0.1
+
+[node name="Game" type="Node3D"]
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_np6jv")
+
+[node name="FloorContainer" type="Node3D" parent="."]
+script = ExtResource("1_3knus")
+_floor = Array[PackedScene]([ExtResource("1_cyv8v"), ExtResource("6_donal"), ExtResource("5_tlpy1"), ExtResource("6_eskna"), ExtResource("7_45k41"), ExtResource("3_r4aam"), ExtResource("3_k45rs"), ExtResource("4_tvdh5"), ExtResource("10_8uce2")])
+
+[node name="Floor" parent="FloorContainer" instance=ExtResource("1_cyv8v")]
+
+[node name="Floor2" parent="FloorContainer" instance=ExtResource("1_cyv8v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0, 0)
+
+[node name="Floor3" parent="FloorContainer" instance=ExtResource("1_cyv8v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 0, 0)
+
+[node name="Floor5" parent="FloorContainer" instance=ExtResource("1_cyv8v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -150, 0, 0)
+
+[node name="Floor4" parent="FloorContainer" instance=ExtResource("3_r4aam")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -100.487, 0, 0)
+
+[node name="Player" parent="." instance=ExtResource("2_m3k3a")]
+transform = Transform3D(7.54979e-08, 0, -1, 0, 1, 0, 1, 0, 7.54979e-08, 0, 1, 0)
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="Player"]
+transform = Transform3D(7.54979e-08, 0, 1, 0, 1, 0, -1, 0, 7.54979e-08, 0.0618909, 2.80547, -1.0121)
+visibility_aabb = AABB(-3.3465, -4, -4, 6.69299, 8, 8)
+process_material = SubResource("ParticleProcessMaterial_2luh4")
+draw_pass_1 = SubResource("CapsuleMesh_bmkky")
+
+[node name="AddFloor" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+offset_left = 20.0
+offset_top = 10.0
+offset_right = 192.0
+offset_bottom = 50.0
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+render_target_update_mode = 4
+
+[node name="Points Label" type="Label" parent="SubViewportContainer/SubViewport"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "	Points"
+script = ExtResource("5_ni3c0")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("12_gart5")
+autoplay = true
+
+[connection signal="timeout" from="AddFloor" to="FloorContainer" method="_on_add_floor_timeout"]
+[connection signal="timeout" from="AddFloor" to="FloorContainer/Floor" method="_on_add_speed_timeout"]
+[connection signal="timeout" from="AddFloor" to="SubViewportContainer/SubViewport/Points Label" method="_on_add_1_point_floor_timeout"]
